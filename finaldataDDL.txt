@@ -1,0 +1,315 @@
+
+
+CREATE TABLE IF NOT EXISTS driving_school.cost
+(
+    costid integer NOT NULL DEFAULT nextval('driving_school.cost_costid_seq'::regclass),
+    description text COLLATE pg_catalog."default",
+    amount numeric,
+    costdate date,
+    costtype driving_school.cost_type,
+    instructor_id character varying COLLATE pg_catalog."default",
+    vehicle_id character varying COLLATE pg_catalog."default",
+    CONSTRAINT cost_pkey PRIMARY KEY (costid),
+    CONSTRAINT cost_instructor_id_fkey FOREIGN KEY (instructor_id)
+        REFERENCES driving_school.instructor (issn) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID,
+    CONSTRAINT cost_vehicle_id_fkey FOREIGN KEY (vehicle_id)
+        REFERENCES driving_school.vehicle (licenseplate) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID
+)
+
+
+CREATE TABLE IF NOT EXISTS driving_school.admin
+(
+    ssn character varying(9) COLLATE pg_catalog."default" NOT NULL,
+    fname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    gender driving_school.gender_type,
+    dateofbirth date NOT NULL,
+    phonenumber character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    password character varying COLLATE pg_catalog."default",
+    CONSTRAINT admin_pkey PRIMARY KEY (ssn),
+    CONSTRAINT chk_ageabove18 CHECK (date_part('year'::text, age(now(), dateofbirth::timestamp with time zone)) >= 18::double precision)
+)
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.course
+(
+    courseid integer NOT NULL DEFAULT nextval('driving_school.course_courseid_seq'::regclass),
+    coursename character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    description text COLLATE pg_catalog."default",
+    vehicletype character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    duration interval,
+    costperlesson numeric NOT NULL,
+    CONSTRAINT course_pkey PRIMARY KEY (courseid),
+    CONSTRAINT course_vehicletype_fkey FOREIGN KEY (vehicletype)
+        REFERENCES driving_school.typevehicle (type) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID
+)
+
+
+CREATE TABLE IF NOT EXISTS driving_school.enrollment
+(
+    enrollmentid integer NOT NULL DEFAULT nextval('driving_school.enrollment_enrollmentid_seq'::regclass),
+    enrollmentdate date,
+    completiondate date,
+    status driving_school.statusenum,
+    courseid integer,
+    vehicleid character varying(10) COLLATE pg_catalog."default",
+    studentid character varying(9) COLLATE pg_catalog."default",
+    instructorid character varying(9) COLLATE pg_catalog."default",
+    CONSTRAINT enrollment_pkey PRIMARY KEY (enrollmentid),
+    CONSTRAINT enrollment_courseid_fkey FOREIGN KEY (courseid)
+        REFERENCES driving_school.course (courseid) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT enrollment_instructorid_fkey FOREIGN KEY (instructorid)
+        REFERENCES driving_school.instructor (issn) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT enrollment_studentid_fkey FOREIGN KEY (studentid)
+        REFERENCES driving_school.student (ssn) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT enrollment_vehicleid_fkey FOREIGN KEY (vehicleid)
+        REFERENCES driving_school.vehicle (licenseplate) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT enrollment_vehicleid_fkey1 FOREIGN KEY (vehicleid)
+        REFERENCES driving_school.vehicle (licenseplate) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT enrollment_vehicleid_fkey2 FOREIGN KEY (vehicleid)
+        REFERENCES driving_school.vehicle (licenseplate) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+)
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.instructor
+(
+    issn character varying(9) COLLATE pg_catalog."default" NOT NULL,
+    fname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    mname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default",
+    phonenumber character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    licensenumber character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    salary numeric NOT NULL,
+    gender driving_school.gender_type NOT NULL,
+    birthdate date NOT NULL,
+    password character varying COLLATE pg_catalog."default",
+    CONSTRAINT instructor_pkey PRIMARY KEY (issn),
+    CONSTRAINT instructor_email_key UNIQUE (email)
+)
+
+
+CREATE TABLE IF NOT EXISTS driving_school.lesson
+(
+    lessonid integer NOT NULL DEFAULT nextval('driving_school.lesson_lessonid_seq'::regclass),
+    lessondate date DEFAULT CURRENT_DATE,
+    starttime time without time zone DEFAULT CURRENT_TIME,
+    enrollmentid integer,
+    CONSTRAINT lesson_pkey PRIMARY KEY (lessonid),
+    CONSTRAINT lesson_enrollmentid_fkey FOREIGN KEY (enrollmentid)
+        REFERENCES driving_school.enrollment (enrollmentid) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID
+)
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.payment
+(
+    paymentid integer NOT NULL DEFAULT nextval('driving_school.payment_paymentid_seq'::regclass),
+    amount numeric,
+    paymentdate date,
+    paymentmethod character varying(50) COLLATE pg_catalog."default",
+    transactionid character varying(50) COLLATE pg_catalog."default",
+    enrollment_id integer,
+    CONSTRAINT payment_pkey PRIMARY KEY (paymentid),
+    CONSTRAINT payment_enrollment_id_fkey FOREIGN KEY (enrollment_id)
+        REFERENCES driving_school.enrollment (enrollmentid) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+)
+
+
+CREATE TABLE IF NOT EXISTS driving_school.stu_address
+(
+    city character varying(30) COLLATE pg_catalog."default",
+    street character varying(100) COLLATE pg_catalog."default",
+    housenumber character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    stu_ssn character varying(9) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT stu_address_pkey PRIMARY KEY (stu_ssn, housenumber),
+    CONSTRAINT stu_address_stu_ssn_fkey FOREIGN KEY (stu_ssn)
+        REFERENCES driving_school.student (ssn) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.student
+(
+    ssn character varying(9) COLLATE pg_catalog."default" NOT NULL,
+    fname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    mname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    dateofbirth date NOT NULL,
+    phonenumber character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default",
+    gender driving_school.gender_type NOT NULL,
+    password character varying COLLATE pg_catalog."default",
+    CONSTRAINT student_pkey PRIMARY KEY (ssn),
+    CONSTRAINT email UNIQUE (email),
+    CONSTRAINT chk_ageabove18 CHECK (date_part('year'::text, age(now(), dateofbirth::timestamp with time zone)) >= 18::double precision)
+)
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.typevehicle
+(
+    type character varying COLLATE pg_catalog."default" NOT NULL,
+    thetype character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "vehicleType_pkey" PRIMARY KEY (type)
+)
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS driving_school.vehicle
+(
+    licenseplate character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    make character varying(30) COLLATE pg_catalog."default",
+    model character varying(15) COLLATE pg_catalog."default",
+    year numeric(4,0),
+    insurancepolicynumber character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    coverageamount numeric(10,2) NOT NULL,
+    effectivedate date NOT NULL,
+    fule_type driving_school.fuelenum NOT NULL,
+    transmission_type driving_school.transmissionenum NOT NULL,
+    covarage_type character varying COLLATE pg_catalog."default",
+    vtype character varying COLLATE pg_catalog."default",
+    CONSTRAINT vehicle_pkey PRIMARY KEY (licenseplate),
+    CONSTRAINT vehicle_insurancepolicynumber_key UNIQUE (insurancepolicynumber),
+    CONSTRAINT vehicle_vtype_fkey FOREIGN KEY (vtype)
+        REFERENCES driving_school.typevehicle (type) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID
+)
+
+-- View: driving_school.monthly_enrollment_summary
+
+-- DROP VIEW driving_school.monthly_enrollment_summary;
+
+CREATE OR REPLACE VIEW driving_school.monthly_enrollment_summary
+ AS
+ SELECT EXTRACT(year FROM enrollmentdate) AS enrollment_year,
+    EXTRACT(month FROM enrollmentdate) AS enrollment_month,
+    count(enrollmentid) AS total_enrollments
+   FROM driving_school.enrollment
+  GROUP BY (EXTRACT(year FROM enrollmentdate)), (EXTRACT(month FROM enrollmentdate))
+  ORDER BY (EXTRACT(year FROM enrollmentdate)), (EXTRACT(month FROM enrollmentdate));
+
+
+-- View: driving_school.monthlyfinancialsummary
+
+-- DROP VIEW driving_school.monthlyfinancialsummary;
+
+CREATE OR REPLACE VIEW driving_school.monthlyfinancialsummary
+ AS
+ WITH monthlypayments AS (
+         SELECT EXTRACT(year FROM payment.paymentdate) AS payment_year,
+            EXTRACT(month FROM payment.paymentdate) AS payment_month,
+            sum(payment.amount) AS total_payment
+           FROM driving_school.payment
+          GROUP BY (EXTRACT(year FROM payment.paymentdate)), (EXTRACT(month FROM payment.paymentdate))
+        ), monthlycosts AS (
+         SELECT EXTRACT(year FROM cost.costdate) AS cost_year,
+            EXTRACT(month FROM cost.costdate) AS cost_month,
+            sum(cost.amount) AS total_cost
+           FROM driving_school.cost
+          GROUP BY (EXTRACT(year FROM cost.costdate)), (EXTRACT(month FROM cost.costdate))
+        )
+ SELECT COALESCE(p.payment_year, c.cost_year) AS year,
+    COALESCE(p.payment_month, c.cost_month) AS month,
+    COALESCE(p.total_payment, 0::numeric) AS total_payment,
+    COALESCE(c.total_cost, 0::numeric) AS total_cost
+   FROM monthlypayments p
+     FULL JOIN monthlycosts c ON p.payment_year = c.cost_year AND p.payment_month = c.cost_month
+  ORDER BY (COALESCE(p.payment_year, c.cost_year)), (COALESCE(p.payment_month, c.cost_month));
+
+ALTER TABLE driving_school.monthlyfinancialsummary
+    OWNER TO raghad;
+
+-- View: driving_school.v1
+
+-- DROP VIEW driving_school.v1;
+
+CREATE OR REPLACE VIEW driving_school.v1
+ AS
+ SELECT enrollmentid,
+    ( SELECT count(l.lessonid) AS count
+           FROM driving_school.lesson l
+          WHERE l.enrollmentid = e.enrollmentid) AS lesson_count,
+    ( SELECT COALESCE(sum(p.amount), 0::numeric) AS "coalesce"
+           FROM driving_school.payment p
+          WHERE p.enrollment_id = e.enrollmentid) AS payment_amount,
+    ( SELECT COALESCE(max(c.costperlesson), 0::numeric) AS "coalesce"
+           FROM driving_school.course c
+          WHERE c.courseid = e.courseid) AS cost_per_lesson
+   FROM driving_school.enrollment e
+  GROUP BY enrollmentid;
+
+ALTER TABLE driving_school.v1
+    OWNER TO raghad;
+
+-- View: driving_school.v2
+
+-- DROP VIEW driving_school.v2;
+
+CREATE OR REPLACE VIEW driving_school.v2
+ AS
+ SELECT enrollmentid,
+    lesson_count,
+    cost_per_lesson,
+    payment_amount,
+    cost_per_lesson * lesson_count::numeric - payment_amount AS amount_to_pay
+   FROM driving_school.v1;
+
+
+CREATE TYPE driving_school.transmissionenum AS ENUM
+    ('Automatic', 'Manual', 'other');
+
+
+CREATE TYPE driving_school.statusenum AS ENUM
+    ('complete', 'incomplete', 'active');
+
+
+CREATE TYPE driving_school.gender_type AS ENUM
+    ('male', 'female');
+
+
+s
+CREATE TYPE driving_school.fuelenum AS ENUM
+    ('Petrol', 'Diesel', 'Electric', 'Hybrid');
+
+
+CREATE TYPE driving_school.cost_type AS ENUM
+    ('instructor', 'vehicle', 'taxes', 'rent', 'other');
+
+
+

@@ -1,0 +1,96 @@
+
+insert into driving_school.instructor values('406444','sara','osama','sabri', TO_DATE('26-01-2003', 'DD-MM-YYYY'),'056945493','1223456',2000);
+insert into driving_school.instructor values('123457','omar','osama','salhab',TO_DATE('14-01-2003', 'DD-MM-YYYY'),'0565645055','1782456',2700);
+insert into driving_school.instructor values('756982','malek','bassam','sabri',TO_DATE('26-01-1999', 'DD-MM-YYYY'),'056945493','122378',2500);	
+insert into driving_school.instructor values('640682','mohammad','osama','omar',TO_DATE('26-02-2003', 'DD-MM-YYYY'),'056945478','1223499',3000);
+insert into driving_school.instructor values('406982','sara','osama','sabri',TO_DATE('26-01-2000', 'DD-MM-YYYY'),'056945455','1223468',2000);										   
+
+
+
+insert into driving_school.student values('406984059','nour','osama','sabri',TO_DATE('26-01-2004', 'DD-MM-YYYY'),'056945578','nour1@gmail.com','female');		
+insert into driving_school.student values('406989988','sara','khale','nazzal',TO_DATE('13-11-2003', 'DD-MM-YYYY'),'056945453','sara1@gmail.com','female');
+insert into driving_school.student values('406987520','ahmad','jamal','masri',TO_DATE('02-01-1999', 'DD-MM-YYYY'),'059945578','ahmad1@gmail.com','male');	
+insert into driving_school.student values('40698022','lama','salem','saleem',TO_DATE('13-07-2000', 'DD-MM-YYYY'),'056955453','lama1@gmail.com','female');
+insert into driving_school.student values('406987415','haya','osama','radwan',TO_DATE('10-01-1998', 'DD-MM-YYYY'),'056945578','haya1@gmail.com','female');
+
+
+
+insert into driving_school.course (coursename, description, vehicletype,duration,costperlesson,vehicletype) values('Beginner Course', 'Introduction to driving for beginners', 'Car', '10 days', 50.00,'1c');									   
+insert into driving_school.course (courseName, description, vehicleType, duration, costPerLesson,vehicletype)VALUES ('Advanced Course', 'Advanced driving skills and techniques', 'Car', '15 days', 80.00,'1c');
+insert into driving_school.course (courseName, description, vehicleType, duration, costPerLesson,vehicletype)VALUES ('Intermediate Course', 'Balanced curriculum for skill development', 'Car', '12 days', 60.00,'1c');
+insert into driving_school.course (courseName, description, vehicleType, duration, costPerLesson,vehicletype)VALUES ('safty course', 'learn to drive carefull ', 'Car', '12 days', 60.00,'1t');
+insert into driving_school.course (courseName, description, vehicleType, duration, costPerLesson,vehicletype)VALUES ('Eco-Friendly Driving Course', 'Promoting awareness of electric vehicles', 'Car', '6 days', 60.00,'1c');
+
+
+
+
+insert into driving_school.vehicle (Make, Model, "year", LicensePlate, InsurancePolicyNumber, CoverageAmount, EffectiveDate, fule_type, transmission_type,vtype)values ('Ford', 'F-150', 2021, 'DEF455', 'ZYX779', 7000.00, '2023-02-01', 'Diesel', 'Manual','1c');
+insert into  driving_school.vehicle (Make, Model, "year", LicensePlate, InsurancePolicyNumber, CoverageAmount, EffectiveDate, fule_type, transmission_type,vtype)values ('Ford', 'F-150', 2021, 'DEF456', 'ZYX786', 7000.00, '2023-02-01', 'Diesel', 'Manual','1c');
+insert into  driving_school.vehicle (Make, Model, "year", LicensePlate, InsurancePolicyNumber, CoverageAmount, EffectiveDate, fule_type, transmission_type,vtype)values ('Tesla', 'Model 3', 2023, 'GHI749', 'ABC113', 10000.00, '2023-03-01', 'Electric', 'Automatic','1c');
+insert into  driving_school.vehicle (Make, Model, "year", LicensePlate, InsurancePolicyNumber, CoverageAmount, EffectiveDate, fule_type, transmission_type,vtype)values ('Tesla', 'Model 3', 2023, 'GHI799', 'ABC126', 10000.00, '2023-03-01', 'Electric', 'Automatic','1c');
+insert into  driving_school.vehicle (Make, Model, "year", LicensePlate, InsurancePolicyNumber, CoverageAmount, EffectiveDate, fule_type, transmission_type,vtype)values ('Toyota', 'Prius', 2022, 'JKL012', 'DEF456', 6000.00, '2023-04-01', 'Hybrid', 'Automatic','1b');
+
+
+
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('NABLUS', 'RAFEDYAH', '27A','406982031');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('RAMALLAH', 'MAIN_STREET', '45B', '406984059');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('JENIN', 'LIBERTY_STREET', '12C', '406989988');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('BETHLEHEM', 'CHRISTMAS_STREET', '78D', '406987520');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('QALQILYA', 'FREEDOM_STREET', '3E', '40698022');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('QALQILYA', 'FREEDOM_STREET', '3E', '406987415');
+INSERT INTO driving_school.stu_address (city, street, houseNumber, stu_ssn) VALUES ('JENIN', 'FREEDOM_STREET', '3aa', '406987415');
+
+--SELECT * FROM driving_school.instructor;
+INSERT INTO driving_school.cost (Description, Amount, CostDate, CostType, Vehicle_ID, Instructor_ID)VALUES ('Regular Maintenance', 150.00, '2023-01-15', 'vehicle', 5, null);
+INSERT INTO driving_school.cost (Description, Amount, CostDate, CostType, Vehicle_ID, Instructor_ID)VALUES ('Fuel Refill', 80.50, '2023-02-02', 'vehicle', 6, null);
+INSERT INTO driving_school.cost (Description, Amount, CostDate, CostType, Vehicle_ID, Instructor_ID)VALUES ('Insurance Premium', 500.00, '2023-03-10', 'instructor', null, '756982');
+INSERT INTO driving_school.cost (Description, Amount, CostDate, CostType, Vehicle_ID, Instructor_ID)VALUES ('Other Expenses', 75.00, '2023-04-05', 'vehicle', 5, null);
+INSERT INTO driving_school.cost (Description, Amount, CostDate, CostType, Vehicle_ID, Instructor_ID)VALUES ('Fuel for Training', 120.75, '2023-05-20', 'taxes', null, null);
+
+
+SET datestyle = 'DMY';
+--select * from driving_school.course;
+
+INSERT INTO driving_school.enrollment (enrollmentDate, completionDate, status, courseID, VehicleID, studentID, instructorID)VALUES ('15-01-2023', '10-03-2023', 'complete', 1, 6, '406982031', '123457');
+INSERT INTO driving_school.enrollment (enrollmentDate, completionDate, status, courseID, VehicleID, studentID, instructorID)VALUES ('20-02-2023', NULL, 'incomplete', 2,7, '406984059', '406444');
+INSERT INTO driving_school.enrollment (enrollmentDate, completionDate, status, courseID, VehicleID, studentID, instructorID)VALUES ('05-03-2023', NULL, 'incomplete', 3,7, '406989988', '756982');
+INSERT INTO driving_school.enrollment (enrollmentDate, completionDate, status, courseID, VehicleID, studentID, instructorID)VALUES ('12-04-2023', '20-06-2023', 'complete', 1, 8, '406987520', '640682');
+INSERT INTO driving_school.enrollment (enrollmentDate, completionDate, status, courseID, VehicleID, studentID, instructorID)VALUES ('18-05-2023', NULL, 'incomplete', 2,9, '40698022', '406982');
+
+
+
+INSERT INTO driving_school.payment (Amount, PaymentDate, PaymentMethod, TransactionID, Enrollment_ID)VALUES (100.00, '2023-01-10', 'Credit Card', 'ABC123', 1);
+INSERT INTO driving_school.payment (Amount, PaymentDate, PaymentMethod, TransactionID, Enrollment_ID)VALUES (75.50, '2023-02-15', 'Cash', 'DEF456', 2);
+INSERT INTO driving_school.payment (Amount, PaymentDate, PaymentMethod, TransactionID, Enrollment_ID)VALUES (120.00, '2023-03-20', 'Bank Transfer', 'GHI789', 3);
+INSERT INTO driving_school.payment (Amount, PaymentDate, PaymentMethod, TransactionID, Enrollment_ID)VALUES (90.25, '2023-04-25', 'Cheque', 'JKL012', 4);
+INSERT INTO driving_school.payment (Amount, PaymentDate, PaymentMethod, TransactionID, Enrollment_ID)VALUES (200.00, '2023-05-30', 'Online Payment', 'MNO345', 5);
+
+
+--SELECT * FROM driving_school.enrollment;
+SET datestyle = 'DMY';
+--select * from driving_school.instructor;
+INSERT INTO driving_school.lesson (lessonDate, startTime, enrollmentID)VALUES ('15-01-2023', '09:00:00',  1);
+INSERT INTO driving_school.lesson (lessonDate, startTime, enrollmentID)VALUES ('20-02-2023', '11:30:00',  2);
+INSERT INTO driving_school.lesson (lessonDate, startTime, enrollmentID)VALUES ('05-03-2023', '14:00:00',  3);
+INSERT INTO driving_school.lesson (lessonDate, startTime, enrollmentID)VALUES ('12-04-2023', '10:00:00',  4);
+INSERT INTO driving_school.lesson (lessonDate, startTime, enrollmentID)VALUES ('18-05-2023', '13:30:00',  5);
+
+
+
+
+INSERT INTO driving_school.admin (ssn, fname, lname, gender, dateofbirth, phonenumber, email, password)
+VALUES
+  ('123456789', 'ahmad', 'mohmaad', 'male', '1990-03-15', '0599123456', 'ahmad@email.com', '123'),
+  ('234567890', 'fatima', 'abed', 'female', '1985-07-22', '0598765432', 'fatima@email.com', '123'),
+  ('345678901', 'mohammad', 'jaber', 'male', '1988-05-10', '0598112233', 'mohammed@email.com', '123'),
+  ('456789012', 'nour', 'salhab', 'female', '1993-12-01', '0598345678', 'nour@email.com', '123'),
+  ('567890123', 'yousef', 'asma', 'male', '1982-09-05', '0598001122', 'yousef@email.com', '123');
+
+									   
+INSERT INTO driving_school.typevehicle (type, thetype)
+VALUES
+  ('1c', 'Car'),
+  ('1m', 'Motorcycle'),
+  ('1t', 'Truck'),
+  ('1b', 'bus'),
+  ('1v', 'Van');
